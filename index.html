@@ -15,14 +15,12 @@
         function randomTime() {
             const min = Math.floor(Math.random() * 10).toString().padStart(2, '0')
             const sec = Math.floor(Math.random() * 60).toString().padStart(2, '0')
-            // console.log(min + ":" + sec)
             time.innerText = `${min}:${sec}`
         }
         function randomArmor() {
             let armor = Math.random() < .5 ? "red" : "blue"
             add.style.color = `${armor}`
             add.innerText = armor === "red" ? armor : "mega"
-            // console.log(armor)
         }
         function createAnswers() {
             // numbers...
@@ -39,7 +37,6 @@
                                 Math.ceil(Math.random() * 30) :
                                 Math.ceil(Math.random() * 6) * 5) 
                                 * maybeNegative
-                // console.log(mistake)
                 const wrongAns = parseAnswer(answerInSecs + mistake)
                 wrongAnswers.push(wrongAns)
             }
@@ -75,14 +72,11 @@
                 return `${min}:${sec}`
             }
         }
-        
+
         randomTime()
         randomArmor()
         createAnswers()
 
-        // window.addEventListener("keydown", () => { randomTime(); randomArmor(); createAnswers()})
-        // window.addEventListener("mousedown", () => { randomTime(); randomArmor(); createAnswers()})
-        
         function answerHandler(e) {
             console.log(e.target.id)
             if (e.target.id === "correct") {
@@ -93,7 +87,7 @@
         }
 
         answersContainer.addEventListener("mousedown", answerHandler)
-
+        
     </script>
 </body>
 <style>
@@ -129,7 +123,6 @@
     ::selection {
         background-color: transparent;
     }
-    /* TODO: create: less than 700px media query */
     @media (max-width: 700px) {
         #answersContainer > div {
             display: block;
@@ -146,7 +139,5 @@
             top: 26%;
         }
     }
-
-
     </style>
 </html>
