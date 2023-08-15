@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Oswald">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="time"></h1>
+    <h2 id="add"></h2>
+    <div id="answersContainer"></div>
+    <script defer>
+        function randomTime() {
+            const min = Math.floor(Math.random() * 10).toString().padStart(2, '0')
+            const sec = Math.floor(Math.random() * 60).toString().padStart(2, '0')
+            // console.log(min + ":" + sec)
+            time.innerText = `${min}:${sec}`
+        }
+        function randomArmor() {
+            let armor = Math.random() < .5 ? "red" : "blue"
+            add.style.color = `${armor}`
+            add.innerText = armor === "red" ? armor : "mega"
+            // console.log(armor)
+        }
+        function createAnswers() {
+            // numbers...
+            const currentTime = time.innerText.split(":")
+            const currentTimeInSecs = currentTime[0] * 60 + currentTime[1] * 1 // * changes str to num
+            const addSecs = add.innerText === "red" ? 25 : 35
+            const answerInSecs = currentTimeInSecs + addSecs
+            // answers...
+            const correctAnswer = parseAnswer(answerInSecs)
+            const wrongAnswers = []
+            for (let i = 1; i <= 2; i++) {
+                const maybeNegative = Math.random() < .5 ? -1 : 1
+                const mistake = (Math.random() < .5 ? 
+                                Math.ceil(Math.random() * 30) :
+                                Math.ceil(Math.random() * 6) * 5) 
+                                * maybeNegative
+                // console.log(mistake)
+                const wrongAns = parseAnswer(answerInSecs + mistake)
+                wrongAnswers.push(wrongAns)
+            }
+            // dom elements...
+            answersContainer.innerHTML = "" // it doesn’t remove the event handlers of the child nodes, which might cause a memory leak
+
+            const answersElems = Array(wrongAnswers.length + 1)
+
+            const correctAnswerElem = document.createElement("div")
+            correctAnswerElem.setAttribute("id","correct")
+            correctAnswerElem.innerText = correctAnswer
+            answersElems[Math.floor(Math.random() * answersElems.length)] = correctAnswerElem
+
+            let wrongAnswerIndex = 0
+            for (let i = 0; i < answersElems.length; i++) {
+                if (answersElems[i] !== undefined) continue
+                const wrongAnswerElem = document.createElement("div")
+                wrongAnswerElem.setAttribute("id", `wrong${i}`)
+                wrongAnswerElem.innerText = wrongAnswers[wrongAnswerIndex]
+                console.log(wrongAnswers)
+                answersElems[i] = wrongAnswerElem
+                wrongAnswerIndex++
+            }
+
+            for (let elem of answersElems) {
+                console.log(elem)
+                answersContainer.appendChild(elem)
+            }
+            // other...
+            function parseAnswer(secons) {
+                const min = Math.floor(secons / 60).toString().padStart(2, '0')
+                const sec = Math.floor(secons % 60).toString().padStart(2, '0')
+                return `${min}:${sec}`
+            }
+        }
+        
+        randomTime()
+        randomArmor()
+        createAnswers()
+
+        // window.addEventListener("keydown", () => { randomTime(); randomArmor(); createAnswers()})
+        // window.addEventListener("mousedown", () => { randomTime(); randomArmor(); createAnswers()})
+        
+        function answerHandler(e) {
+            console.log(e.target.id)
+            if (e.target.id === "correct") {
+                randomTime()
+                randomArmor()
+                createAnswers()
+            }
+        }
+
+        answersContainer.addEventListener("mousedown", answerHandler)
+
+    </script>
+</body>
+<style>
+    * {
+        font-family: 'Oswald';
+    }
+    h1, h2, #answersContainer {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, -50%)
+    }
+    h1 {
+        font-size: 4em;
+        top: 20%;
+        font-weight: 700;
+    }
+    h2 {
+        font-size: 2em;
+        top: 33%;
+        font-weight: 700;
+    }
+    #answersContainer {
+        max-width: 100%;
+        font-size: 2em;
+        font-weight: 700;
+        top: 50%;
+        align-items: center;
+    }
+    #answersContainer > div {
+        display: inline;
+        margin: 0px 80px;
+    }
+    ::selection {
+        background-color: transparent;
+    }
+    /* TODO: create: less than 700px media query */
+    @media (max-width: 700px) {
+        #answersContainer > div {
+            display: block;
+            margin: 50px 0px;
+        }
+        #answersContainer {
+            top: 63%;
+            align-items: center;
+        }
+        h1 {
+            top: 10%;
+        }
+        h2 {
+            top: 26%;
+        }
+    }
+
+
+    </style>
+</html>
