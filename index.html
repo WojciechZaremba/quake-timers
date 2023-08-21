@@ -78,11 +78,29 @@
         createAnswers()
 
         function answerHandler(e) {
+            console.log("event")
+            e.stopPropagation()
             console.log(e.target.id)
             if (e.target.id === "correct") {
-                randomTime()
-                randomArmor()
-                createAnswers()
+                answersContainer.removeEventListener("mousedown", answerHandler)
+                correct.classList.add("match")
+                const nextAutomatic = setTimeout(()=>{
+                    randomTime()
+                    randomArmor()
+                    createAnswers()
+                    answersContainer.addEventListener("mousedown", answerHandler)
+                },3000)
+                // window.addEventListener("mousedown", ()=>console.log("test"), {once: true})
+                window.addEventListener("mousedown", () => {
+                        clearTimeout(nextAutomatic)
+                        randomTime()
+                        randomArmor()
+                        createAnswers()
+                        answersContainer.addEventListener("mousedown", answerHandler)
+                }, {once: true})
+
+            } else {
+
             }
         }
 
@@ -93,6 +111,7 @@
 <style>
     * {
         font-family: 'Oswald';
+        user-select: none;
     }
     h1, h2, #answersContainer {
         position: absolute;
@@ -119,6 +138,14 @@
     #answersContainer > div {
         display: inline;
         margin: 0px 80px;
+        cursor: pointer;
+    }
+    .match {
+        color: green;
+        /* text-shadow: 0px 0px 20px rgb(0, 255, 0); */
+    }
+    .dontmatch {
+        text-shadow: 0px 0px 20px rgb(255, 0, 0);
     }
     ::selection {
         background-color: transparent;
