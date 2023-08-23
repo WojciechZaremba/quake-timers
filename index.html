@@ -72,38 +72,35 @@
                 return `${min}:${sec}`
             }
         }
-
-        randomTime()
-        randomArmor()
-        createAnswers()
+        
+        function prepareQuestion() {
+            randomTime()
+            randomArmor()
+            createAnswers()
+        }
+        prepareQuestion()
 
         function answerHandler(e) {
-            console.log("event")
+            console.log("answered")
             e.stopPropagation()
-            console.log(e.target.id)
             if (e.target.id === "correct") {
                 answersContainer.removeEventListener("mousedown", answerHandler)
                 correct.classList.add("match")
                 const nextAutomatic = setTimeout(()=>{
-                    randomTime()
-                    randomArmor()
-                    createAnswers()
+                    window.removeEventListener("mousedown", fastForward)
+                    prepareQuestion()
                     answersContainer.addEventListener("mousedown", answerHandler)
-                },800)
-                // window.addEventListener("mousedown", ()=>console.log("test"), {once: true})
-                window.addEventListener("mousedown", () => {
-                        clearTimeout(nextAutomatic)
-                        randomTime()
-                        randomArmor()
-                        createAnswers()
-                        answersContainer.addEventListener("mousedown", answerHandler)
-                }, {once: true})
-
+                }, 800)
+                window.addEventListener("mousedown", fastForward, {once: true})
+                function fastForward() {
+                    clearTimeout(nextAutomatic)
+                    prepareQuestion()
+                    answersContainer.addEventListener("mousedown", answerHandler)
+                }
             } else {
-
+                console.log("wrong answer")
             }
         }
-
         answersContainer.addEventListener("mousedown", answerHandler)
         
     </script>
