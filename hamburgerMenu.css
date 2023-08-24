@@ -1,15 +1,13 @@
 :root {
     --hamburger-height: 40px;
     --bar-width: 50px;
-    --bar-height: 8px;
+    --bar-height: 9px;
     --hamburger-gap: calc((var(--hamburger-height) - var(--bar-height) * 3) / 2);
 }
 .hamburger-menu {
-    /* --x-height: calc(var(--bar-height) - 2); */
-    --x-height: calc(var(--bar-height) - 0px);
     /* --x-width: calc(var(--hamburger-height) * 1.414 - var(--bar-height) * 1.414); */
     --x-width: calc((var(--hamburger-height) - var(--bar-height)) * 1.414);
-    --x-margin-left: calc((var(--bar-width) - var(--hamburger-height)) / 2);
+    --x-margin-left: calc((var(--bar-width) - var(--hamburger-height)) / 2 + var(--bar-height) / 2);
 
     display: flex;
     flex-direction: column;
@@ -29,9 +27,10 @@
     height: var(--bar-height);
     background-color: black;
     border-radius: 9999px;
+    /* box-shadow: 0 0 0 0px black; */
     transform-origin: left center;
-    box-shadow: 0 0 0 1px black;
-
+    transition: width .3s, rotate .3s, margin .3s, box-shadow .3s;
+    transition-timing-function: linear
 }
 .hamburger-menu input {
     padding: 0;
@@ -39,24 +38,29 @@
     outline: none;
     appearance: none;
     pointer-events: none;
-    
+    transition: width .4s, margin .4s, box-shadow .3s;
+    transition-timing-function: ease-out
 }
 .hamburger-menu input:checked {
-    box-shadow: none;
-    width: 0;
+    /* background-color: red; */
+    z-index: 10;
+    /* box-shadow: none; */
+    width: 0px;
+    /* margin-left: calc(var(--bar-width) / 2 ); */
+    margin-left: calc(var(--bar-width) / 2 + var(--bar-height) / 3);
 }
 .hamburger-menu:has(input:checked)::before {
-    box-shadow: none;
+    /* box-shadow: none; */
     width: var(--x-width);
-    height: var(--x-height);
+    height: var(--bar-height);
     position: relative;
     rotate: 45deg;
     margin-left: var(--x-margin-left);
 }
 .hamburger-menu:has(input:checked)::after {
-    box-shadow: none;
+    /* box-shadow: none; */
     width: var(--x-width);
-    height: var(--x-height);
+    height: var(--bar-height);
     position: relative;
     rotate: -45deg;
     margin-left: var(--x-margin-left);
