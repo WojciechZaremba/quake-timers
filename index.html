@@ -9,9 +9,11 @@
     <title>Document</title>
 </head>
 <body>
-    <label class="hamburger-menu">
-        <input type="checkbox" checked/>
+    <input id="hambCheck" type="checkbox"/>
+    <label for="hambCheck" class="hamburger-menu">
+        <div class="hamburger-menu-fix"></div>
     </label>
+    <aside class="sidebar">asd</aside>
     <h1 id="time"></h1>
     <h2 id="add"></h2>
     <div id="answersContainer"></div>
@@ -114,7 +116,15 @@
         font-family: 'Oswald';
         user-select: none;
     }
+    html {
+        padding: 0;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+    }
     h1, h2, #answersContainer {
+        z-index: 0;
         position: absolute;
         left: 50%;
         transform: translate(-50%, -50%)
